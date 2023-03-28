@@ -3,6 +3,7 @@
 import os
 import skimage.io as io
 import skimage.transform as trans
+from keras.optimizer_v2.adam import Adam
 from keras.preprocessing.image import ImageDataGenerator
 import numpy as np
 from keras.models import *
@@ -43,7 +44,7 @@ def train_generator(batch_size=32):
     mask_datagen = ImageDataGenerator(**data_gen_args)
     seed = 1
     image_generator = image_datagen.flow_from_directory(
-        'D:/pycharm/up_down_code/Layer-oriented-algorithm-and-ground-true/datasets/train_data/data', #The absolute path of the data set
+        'E:/Dense-U-net-master/Layer-oriented-algorithm-and-ground-true/datasets/train_data', #The absolute path of the data set
         class_mode=None,
         batch_size=batch_size,
         color_mode='rgb',
@@ -51,7 +52,7 @@ def train_generator(batch_size=32):
         #save_to_dir='./data/gen/images',
         seed=seed)
     mask_generator = mask_datagen.flow_from_directory(
-        'D:/pycharm/up_down_code/Layer-oriented-algorithm-and-ground-true/datasets/ground_true/label', #The absolute path of the data set
+        'E:/Dense-U-net-master/Layer-oriented-algorithm-and-ground-true/datasets/ground_true/label', #The absolute path of the data set
         class_mode=None,
         # color_mode='grayscale',
         color_mode='rgb',
@@ -95,7 +96,7 @@ def plot_history(history, result_dir, prefix):
     plt.grid()
     plt.legend(['loss', 'val_loss'], loc='upper right')
     # plt.show()
-    plt.savefig('D:/pycharm/up_down_code/loss_picture/denseunet_loss.png')
+    plt.savefig('E:/Dense-U-net-master/loss_picture/denseunet_loss.png')
     plt.close()
 
     # x = history.history['loss']
@@ -232,7 +233,7 @@ def add_gaussian_nois(image_in,mean = 0,var = 0.01):
     return img_out
 
 if __name__ == '__main__':
-    is_train =False
+    is_train =True
     # train
     if is_train:
         model =unet(input_shape=(512,512,3))
@@ -260,7 +261,7 @@ if __name__ == '__main__':
         psnr_num = 0
         for i in range(2):
             x = cv2.imread(
-                'D:/pycharm/up_down_code/Layer-oriented-algorithm-and-ground-true/text_data/hologram/data75/data/75_%d.tif' % (
+                'E:/Dense-U-net-master/Layer-oriented-algorithm-and-ground-true/text_data/hologram/data_75/data/75_%d.tif' % (
                     i + 1))  # #The absolute path of the testsets
             #x = add_gaussian_nois(x)
             x = x / 255.0
